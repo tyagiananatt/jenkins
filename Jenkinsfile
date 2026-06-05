@@ -23,25 +23,51 @@
 // }
 
 
+// pipeline {
+
+//     agent any
+
+//     environment {
+//         APP_NAME = 'StudentApp'
+//     }
+
+//     stages {
+
+//         stage('Info') {
+//             steps {
+//                 bat 'echo %APP_NAME%'
+//             }
+//         }
+
+//         stage('Build') {
+//             steps {
+//                 bat 'mvn clean package'
+//             }
+//         }
+
+//     }
+// }
+
+
 pipeline {
 
     agent any
 
     environment {
-        APP_NAME = 'StudentApp'
+        APP_NAME = 'student-app'
     }
 
     stages {
 
-        stage('Info') {
-            steps {
-                bat 'echo %APP_NAME%'
-            }
-        }
-
         stage('Build') {
             steps {
                 bat 'mvn clean package'
+            }
+        }
+
+        stage('Docker Build') {
+            steps {
+                bat 'docker build -t student-app:v1 .'
             }
         }
 
