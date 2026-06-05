@@ -1,41 +1,36 @@
 name: Build Pipeline
 
 on:
-push:
+  push:
 
 jobs:
+  build:
+    runs-on: ubuntu-latest
 
-build:
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
 
-runs-on: ubuntu-latest
+      - name: Install Dependencies
+        run: mvn dependency:resolve
 
-steps:
+      - name: Compile Project
+        run: mvn compile
 
-  - name: Checkout Repository
-    uses: actions/checkout@v4
+      - name: Run Unit Tests
+        run: mvn test
 
-  - name: Setup Java
-    uses: actions/setup-java@v4
-    with:
-      java-version: '17'
-      distribution: 'temurin'
+      - name: Package Application
+        run: mvn package
 
-  - name: Install Dependencies
-    run: mvn dependency:resolve
-
-  - name: Compile Project
-    run: mvn compile
-
-  - name: Run Unit Tests
-    run: mvn test
-
-  - name: Package Application
-    run: mvn package
-
-  - name: Archive Artifact
-    uses: actions/upload-artifact@v4
-    with:
-      name: java-artifact
-      path: target/*.jar
-
+      - name: Archive Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: java-artifact
+          path: target/*.jar
