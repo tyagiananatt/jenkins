@@ -145,7 +145,7 @@ stages {
         steps {
 
             git branch: "${params.BRANCH_NAME}",
-                url: 'https://github.com/yourusername/student-app.git'
+              url: 'https://github.com/tyagiananatt/jenkins.git'
 
         }
     }
